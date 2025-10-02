@@ -39,7 +39,7 @@ const LoginPage = () => {
             />
           </div>
           <Button
-            type="submit"
+            //type="submit"
             className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-2 rounded-lg font-medium transition-all"
           >
             <Link href={'/user/pages/home'}>Login</Link>
