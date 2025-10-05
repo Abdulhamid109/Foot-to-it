@@ -1,8 +1,65 @@
+"use client"
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+import axios from "axios";
+import { useRouter } from 'next/navigation';
+
+
+interface signupdata {
+    FullName: string,
+    email: string,
+    phoneNumber: string,
+    Address: string,
+    password: string,
+}
 
 const SignupPage = () => {
+
+    const [data, setdata] = useState<signupdata | null>({
+        FullName: "",
+        email: "",
+        phoneNumber: "",
+        Address: "",
+        password: ""
+    });
+
+    const [loading, setloading] = useState<Boolean>(false);
+
+    const onchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        setdata((prevData) => ({
+            ...prevData!,
+            [name]: value
+        }))
+    }
+
+    const router = useRouter();
+
+    const onhandleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setloading(true);
+        try {
+            const response = await axios.post("/api/user/signup", data);
+            if (response.status === 200) {
+                console.log(response.data);
+                console.log("successfully signed up..");
+                toast.success("Account created successfully");
+                router.push("/user/auth/login");
+            } else {
+                console.log("Something went wrong!!");
+                toast.error("Failed to create the account!!");
+            }
+            setloading(false);
+
+
+
+        } catch (error) {
+            console.log("Failed to signup!!");
+            toast.error("Something went wrong!! try again later.")
+        }
+    }
     return (
         <div className="w-screen h-screen  text-black flex justify-center items-center ">
             {/* Glassmorphism Card */}
@@ -20,11 +77,14 @@ const SignupPage = () => {
                 </div>
 
                 {/* Form */}
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={onhandleSubmit}>
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-white/90 block">FullName</label>
                         <input
                             type="text"
+                            name='FullName'
+                            value={data!.FullName || ""}
+                            onChange={onchange}
                             placeholder="Enter your Full Name"
                             className="w-full px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/30 focus:border-green-400 focus:ring-2 focus:ring-green-400/20 outline-none text-white placeholder-white/60"
                         />
@@ -33,19 +93,28 @@ const SignupPage = () => {
                         <label className="text-sm font-medium text-white/90 block">Email</label>
                         <input
                             type="email"
+                            name='email'
+                            value={data!.email || ""}
+                            onChange={onchange}
                             placeholder="Enter your email"
                             className="w-full px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/30 focus:border-green-400 focus:ring-2 focus:ring-green-400/20 outline-none text-white placeholder-white/60"
                         />
 
                         <label className="text-sm font-medium text-white/90 block">Ph no.</label>
                         <input
-                            type="number"
-                            placeholder="Enter your phone number"
+                            type="text"
+                            name='phoneNumber'
+                            value={data?.phoneNumber || ""}
+                            onChange={onchange}
+                            placeholder="Enter your phone number (+91)"
                             className="w-full px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/30 focus:border-green-400 focus:ring-2 focus:ring-green-400/20 outline-none text-white placeholder-white/60"
                         />
                         <label className="text-sm font-medium text-white/90 block">Address</label>
                         <input
                             type="text"
+                            name='Address'
+                            value={data?.Address || ""}
+                            onChange={onchange}
                             placeholder="Enter your Address"
                             className="w-full px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/30 focus:border-green-400 focus:ring-2 focus:ring-green-400/20 outline-none text-white placeholder-white/60"
                         />
@@ -54,6 +123,9 @@ const SignupPage = () => {
                         <label className="text-sm font-medium text-white/90 block">Password</label>
                         <input
                             type="password"
+                            name='password'
+                            value={data?.password || ""}
+                            onChange={onchange}
                             placeholder="Enter your password"
                             className="w-full px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/30 focus:border-green-400 focus:ring-2 focus:ring-green-400/20 outline-none text-white placeholder-white/60"
                         />
@@ -63,7 +135,7 @@ const SignupPage = () => {
                         type="submit"
                         className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-2 rounded-lg font-medium transition-all"
                     >
-                        Signup
+                        {loading ? "loading..." : "Signup"}
                     </Button>
                 </form>
 

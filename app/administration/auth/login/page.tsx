@@ -33,12 +33,12 @@ const LoginPage = () => {
     e.preventDefault();
     setloading(true);
     try {
-      const response = await axios.post("/api/user/login", data);
+      const response = await axios.post("/api/adminstration/login", data);
       if (response.status === 200) {
         console.log(response.data);
         console.log("successfully signed up..");
         toast.success("Account created successfully");
-        router.push("/user/pages/home");
+        router.push("/administration/addCompany");
       } else {
         console.log("Something went wrong!!");
         toast.error("Failed to create the account!!");
@@ -58,18 +58,16 @@ const LoginPage = () => {
       {/* Glassmorphism Card */}
       <div className="w-full max-w-md bg-black/50 backdrop-blur-lg rounded-xl shadow-lg border border-white/20 p-8">
         {/* Logo/Title */}
-        <div className="text-start w-full p-2 mb-6 flex justify-between">
+        <div className="text-start w-full p-2 mb-6">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-green-300 to-green-600 text-transparent bg-clip-text">
-            Green Bites
+            Green Bites -Admin Panel
           </h1>
-          <Link className='flex font-thin text-[13px] text-gray-700 underline hover:text-blue-200 justify-between items-center ' href={'/administration/auth/login'}>Admin</Link>
-
         </div>
 
         {/* Welcome Message */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-white">Welcome Back!</h2>
-          <p className="text-sm text-white/80">Please enter your credentials to login.</p>
+          <p className="text-sm text-white/80">Please enter your regestered credentials to login.</p>
         </div>
 
         {/* Form */}
@@ -79,7 +77,7 @@ const LoginPage = () => {
             <input
               type="email"
               name='email'
-              value={data?.email || ""}
+              value={data?.email||""}
               onChange={onchange}
               placeholder="Enter your registered email"
               className="w-full px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/30 focus:border-green-400 focus:ring-2 focus:ring-green-400/20 outline-none text-white placeholder-white/60"
@@ -90,7 +88,7 @@ const LoginPage = () => {
             <input
               type="password"
               name='password'
-              value={data?.password || ""}
+              value={data?.password||""}
               onChange={onchange}
               placeholder="Enter your password"
               className="w-full px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/30 focus:border-green-400 focus:ring-2 focus:ring-green-400/20 outline-none text-white placeholder-white/60"
@@ -100,22 +98,12 @@ const LoginPage = () => {
             type="submit"
             className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-2 rounded-lg font-medium transition-all"
           >
-            {loading ? "loading.." : "Login"}
+            {loading?"loading..":"Login"}
           </Button>
         </form>
 
-        {/* Signup Link */}
-        <div className="mt-6 text-center text-sm text-white/80 flex justify-center items-center">
-          <div>
-            Don&apos;t have an account?{' '}
-            <Link
-              href="/user/auth/signup"
-              className="font-medium text-green-300 hover:text-green-200 transition-colors"
-            >
-              Signup
-            </Link>
-          </div>
-        </div>
+        
+        
       </div>
     </div>
   );
