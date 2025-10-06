@@ -25,7 +25,7 @@ const SignupPage = () => {
         password: ""
     });
 
-    const [loading, setloading] = useState<Boolean>(false);
+    const [loading, setloading] = useState<boolean>(false);
 
     const onchange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target

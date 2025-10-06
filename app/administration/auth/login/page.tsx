@@ -25,7 +25,7 @@ const LoginPage = () => {
     }))
   }
 
-  const [loading, setloading] = useState<Boolean>(false);
+  const [loading, setloading] = useState<boolean>(false);
 
   const router = useRouter();
 
