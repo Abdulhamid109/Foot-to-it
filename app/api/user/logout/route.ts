@@ -1,27 +1,21 @@
-import { connect } from "@/config/dbconfig";
-import { NextResponse } from "next/server";
-
-
-
-
-connect();
+import {  NextResponse } from "next/server";
 
 
 export async function GET() {
     try {
-        const response = NextResponse.json(
-            {success:true,message:"successfully logged out!!"},
-            {status:200}
-        );
-
-        const tokenresponse = response.cookies.set("token","",{
-            httpOnly:true
+        const response = NextResponse.json({
+            status:200,
+            success:true,
+            message:'Logout successfully'
         });
-        return tokenresponse;
+
+        response.cookies.set('token','',{expires:new Date(0)});
+        return response;
     } catch (error) {
-        return NextResponse.json(
-            {error:"Internal Server error"+error},
-            {status:500}
-        )
+        console.log('Failed to logout: ' + error);
+        return NextResponse.json({
+            status:500,
+            error:'Internal server error'
+        })
     }
 }
